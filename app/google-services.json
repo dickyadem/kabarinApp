@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "123456789",
-    "project_id": "kabarin-pacar-app",
-    "storage_bucket": "kabarin-pacar-app.appspot.com"
+    "project_number": "448752979057",
+    "project_id": "kabarinapp-cd648",
+    "storage_bucket": "kabarinapp-cd648.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123456789:android:abcdef1234567890",
+        "mobilesdk_app_id": "1:448752979057:android:1a91f8c15e6e27376f5fd0",
         "android_client_info": {
           "package_name": "com.kabarinpacar.app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyPlaceholderKeyForDevelopmentOnly12345"
+          "current_key": "AIzaSyCUGWcMUOarJm9A5IMKA_QesV53_kAf7dc"
         }
       ],
       "services": {
