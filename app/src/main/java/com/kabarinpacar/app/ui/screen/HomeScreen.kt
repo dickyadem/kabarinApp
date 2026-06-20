@@ -96,7 +96,7 @@ fun HomeScreen(
 
     LaunchedEffect(uiState.submitSuccess) {
         if (uiState.submitSuccess) {
-            snackbarHostState.showSnackbar("Status berhasil dikirim! 💕")
+            snackbarHostState.showSnackbar("Status berhasil dikirim!")
             viewModel.clearSuccess()
         }
     }
@@ -114,7 +114,7 @@ fun HomeScreen(
             TopAppBar(
                 title = {
                     Text(
-                        "Kabarin Pacar 💕",
+                        "Kabarin",
                         style = MaterialTheme.typography.titleLarge
                     )
                 },
@@ -392,7 +392,12 @@ fun PartnerStatusCard(
                     }
                 }
             } else {
-                Text(text = "💌", fontSize = 28.sp)
+                Icon(
+                    imageVector = Icons.Default.People,
+                    contentDescription = null,
+                    modifier = Modifier.size(28.dp),
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.4f)
+                )
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(

@@ -185,9 +185,11 @@ fun PartnerScreen(
 
             } else {
                 Spacer(modifier = Modifier.height(60.dp))
-                Text(
-                    text = "💌",
-                    fontSize = 64.sp
+                Icon(
+                    imageVector = Icons.Default.People,
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp),
+                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(

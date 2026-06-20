@@ -67,8 +67,8 @@ class ReminderWorker @AssistedInject constructor(
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("Kabarin Pacar")
-            .setContentText("Jangan lupa update status ke pasanganmu! 💕")
+            .setContentTitle("Kabarin")
+            .setContentText("Jangan lupa update status ke pasanganmu!")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

@@ -66,12 +66,7 @@ fun OnboardingScreen(
         Spacer(modifier = Modifier.height(48.dp))
 
         Text(
-            text = "💕",
-            fontSize = 56.sp
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            text = "Kabarin Pacar",
+            text = "Kabarin",
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold

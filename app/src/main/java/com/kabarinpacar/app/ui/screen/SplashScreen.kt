@@ -58,12 +58,7 @@ fun SplashScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "💕",
-            fontSize = 72.sp
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Kabarin Pacar",
+            text = "Kabarin",
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onPrimary,
             fontWeight = FontWeight.Bold

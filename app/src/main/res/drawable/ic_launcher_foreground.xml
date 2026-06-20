@@ -5,30 +5,20 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Hati utama (putih) -->
+    <!-- Chat bubble utama (putih) -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M54,76 C54,76 24,58 24,38 C24,28 32,20 42,20 C47,20 52,23 54,27 C56,23 61,20 66,20 C76,20 84,28 84,38 C84,58 54,76 54,76Z" />
+        android:pathData="M22,26 L86,26 C89.3,26 92,28.7 92,32 L92,66 C92,69.3 89.3,72 86,72 L50,72 L36,86 L36,72 L22,72 C18.7,72 16,69.3 16,66 L16,32 C16,28.7 18.7,26 22,26Z" />
 
-    <!-- Chat bubble kecil di kanan bawah -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.92"
-        android:pathData="M62,60 L86,60 C88.2,60 90,61.8 90,64 L90,80 C90,82.2 88.2,84 86,84 L70,84 L65,90 L65,84 L62,84 C59.8,84 58,82.2 58,80 L58,64 C58,61.8 59.8,60 62,60Z" />
-
-    <!-- Titik kiri (path circle r=2.5 cx=68 cy=72) -->
+    <!-- Tiga titik di dalam bubble (warna pink) -->
     <path
         android:fillColor="#F43F5E"
-        android:pathData="M68,69.5 C69.38,69.5 70.5,70.62 70.5,72 C70.5,73.38 69.38,74.5 68,74.5 C66.62,74.5 65.5,73.38 65.5,72 C65.5,70.62 66.62,69.5 68,69.5Z" />
-
-    <!-- Titik tengah (path circle r=2.5 cx=74 cy=72) -->
+        android:pathData="M38,52 C38,49.8 39.8,48 42,48 C44.2,48 46,49.8 46,52 C46,54.2 44.2,56 42,56 C39.8,56 38,54.2 38,52Z" />
     <path
         android:fillColor="#F43F5E"
-        android:pathData="M74,69.5 C75.38,69.5 76.5,70.62 76.5,72 C76.5,73.38 75.38,74.5 74,74.5 C72.62,74.5 71.5,73.38 71.5,72 C71.5,70.62 72.62,69.5 74,69.5Z" />
-
-    <!-- Titik kanan (path circle r=2.5 cx=80 cy=72) -->
+        android:pathData="M50,52 C50,49.8 51.8,48 54,48 C56.2,48 58,49.8 58,52 C58,54.2 56.2,56 54,56 C51.8,56 50,54.2 50,52Z" />
     <path
         android:fillColor="#F43F5E"
-        android:pathData="M80,69.5 C81.38,69.5 82.5,70.62 82.5,72 C82.5,73.38 81.38,74.5 80,74.5 C78.62,74.5 77.5,73.38 77.5,72 C77.5,70.62 78.62,69.5 80,69.5Z" />
+        android:pathData="M62,52 C62,49.8 63.8,48 66,48 C68.2,48 70,49.8 70,52 C70,54.2 68.2,56 66,56 C63.8,56 62,54.2 62,52Z" />
 
 </vector>
