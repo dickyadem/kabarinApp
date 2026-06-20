@@ -21,8 +21,7 @@ sealed class Screen(val route: String) {
 @Composable
 fun KabarinNavGraph(
     navController: NavHostController,
-    startDestination: String = Screen.Splash.route,
-    onPairingComplete: () -> Unit = {}
+    startDestination: String = Screen.Splash.route
 ) {
     NavHost(
         navController = navController,
@@ -45,7 +44,6 @@ fun KabarinNavGraph(
         composable(Screen.Onboarding.route) {
             OnboardingScreen(
                 onPairingComplete = {
-                    onPairingComplete()
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Onboarding.route) { inclusive = true }
                     }

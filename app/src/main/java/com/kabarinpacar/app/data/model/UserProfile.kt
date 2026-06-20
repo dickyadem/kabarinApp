@@ -10,5 +10,6 @@ data class PartnerStatus(
     val activity: String = "",
     val note: String = "",
     val locationName: String = "",
-    val timestamp: Long = 0L
+    val timestamp: Long = 0L,
+    val nickname: String = ""
 )

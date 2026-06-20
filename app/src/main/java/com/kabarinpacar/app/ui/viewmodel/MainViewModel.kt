@@ -31,7 +31,8 @@ data class MainUiState(
     val submitSuccess: Boolean = false,
     val errorMessage: String = "",
     val locationOptIn: Boolean = false,
-    val reminderIntervalHours: Int = StatusRepository.DEFAULT_REMINDER_INTERVAL
+    val reminderIntervalHours: Int = StatusRepository.DEFAULT_REMINDER_INTERVAL,
+    val nickname: String = ""
 )
 
 @HiltViewModel
@@ -43,7 +44,8 @@ class MainViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(
         MainUiState(
             locationOptIn = statusRepository.locationOptIn,
-            reminderIntervalHours = statusRepository.reminderIntervalHours
+            reminderIntervalHours = statusRepository.reminderIntervalHours,
+            nickname = statusRepository.nickname
         )
     )
     val uiState: StateFlow<MainUiState> = _uiState
@@ -81,6 +83,11 @@ class MainViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(locationOptIn = enabled)
         if (enabled) fetchLocation()
         else _uiState.value = _uiState.value.copy(locationName = "")
+    }
+
+    fun setNickname(name: String) {
+        statusRepository.setNickname(name)
+        _uiState.value = _uiState.value.copy(nickname = name)
     }
 
     fun setReminderInterval(hours: Int) {

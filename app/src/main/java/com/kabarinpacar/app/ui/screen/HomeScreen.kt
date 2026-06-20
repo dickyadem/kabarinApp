@@ -63,7 +63,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kabarinpacar.app.data.model.ActivityType
+import com.kabarinpacar.app.data.model.PartnerStatus
 import com.kabarinpacar.app.ui.viewmodel.MainViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -75,6 +79,7 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val latestStatus by viewModel.latestStatus.collectAsState()
+    val partnerStatus by viewModel.partnerStatus.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     var showSettings by remember { mutableStateOf(false) }
 
@@ -140,6 +145,12 @@ fun HomeScreen(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            // Partner status — tampil langsung di home (tanpa perlu buka halaman lain)
+            PartnerStatusCard(
+                partnerStatus = partnerStatus,
+                onClick = onNavigateToPartner
+            )
+
             // Last status card
             latestStatus?.let { status ->
                 Card(
@@ -182,6 +193,8 @@ fun HomeScreen(
             // Settings panel
             AnimatedVisibility(visible = showSettings) {
                 SettingsPanel(
+                    nickname = uiState.nickname,
+                    onNicknameChange = viewModel::setNickname,
                     locationOptIn = uiState.locationOptIn,
                     reminderInterval = uiState.reminderIntervalHours,
                     onLocationToggle = { enabled ->
@@ -288,6 +301,118 @@ fun HomeScreen(
 }
 
 @Composable
+fun PartnerStatusCard(
+    partnerStatus: PartnerStatus?,
+    onClick: () -> Unit
+) {
+    val hasStatus = partnerStatus != null && partnerStatus.activity.isNotEmpty()
+    val partnerName = partnerStatus?.nickname?.ifEmpty { "Pasanganmu" } ?: "Pasanganmu"
+
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        ),
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (hasStatus) {
+                val activityType = try {
+                    ActivityType.valueOf(partnerStatus!!.activity)
+                } catch (e: Exception) {
+                    ActivityType.LAINNYA
+                }
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(50))
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = activityType.emoji, fontSize = 26.sp)
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = partnerName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+                    )
+                    Text(
+                        text = activityType.label,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    if (partnerStatus!!.note.isNotEmpty()) {
+                        Text(
+                            text = "\"${partnerStatus.note}\"",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f)
+                        )
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        if (partnerStatus.locationName.isNotEmpty()) {
+                            Icon(
+                                Icons.Default.LocationOn,
+                                contentDescription = null,
+                                modifier = Modifier.size(12.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                            Text(
+                                text = partnerStatus.locationName,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+                            )
+                        }
+                        Text(
+                            text = relativeTime(partnerStatus.timestamp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.5f)
+                        )
+                    }
+                }
+            } else {
+                Text(text = "💌", fontSize = 28.sp)
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text(
+                        text = partnerName,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    Text(
+                        text = "Belum ada update dari pasanganmu",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.6f)
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun relativeTime(timestamp: Long): String {
+    if (timestamp <= 0) return ""
+    val diff = System.currentTimeMillis() - timestamp
+    return when {
+        diff < 60_000 -> "Baru saja"
+        diff < 3_600_000 -> "${diff / 60_000} mnt lalu"
+        diff < 86_400_000 -> "${diff / 3_600_000} jam lalu"
+        else -> SimpleDateFormat("dd MMM, HH:mm", Locale("id", "ID")).format(Date(timestamp))
+    }
+}
+
+@Composable
 fun ActivityChip(
     activity: ActivityType,
     isSelected: Boolean,
@@ -327,6 +452,8 @@ fun ActivityChip(
 
 @Composable
 fun SettingsPanel(
+    nickname: String,
+    onNicknameChange: (String) -> Unit,
     locationOptIn: Boolean,
     reminderInterval: Int,
     onLocationToggle: (Boolean) -> Unit,
@@ -347,6 +474,15 @@ fun SettingsPanel(
                 text = "Pengaturan",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold
+            )
+
+            OutlinedTextField(
+                value = nickname,
+                onValueChange = onNicknameChange,
+                label = { Text("Nama panggilanmu") },
+                placeholder = { Text("Misal: Sayang, Beb...") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
             )
 
             Row(

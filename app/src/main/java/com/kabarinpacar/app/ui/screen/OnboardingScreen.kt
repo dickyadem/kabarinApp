@@ -83,7 +83,18 @@ fun OnboardingScreen(
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(24.dp))
+
+        OutlinedTextField(
+            value = uiState.nickname,
+            onValueChange = viewModel::updateNickname,
+            label = { Text("Nama panggilanmu") },
+            placeholder = { Text("Misal: Sayang, Beb...") },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         TabRow(
             selectedTabIndex = selectedTab,

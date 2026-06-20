@@ -30,6 +30,8 @@ class StatusRepository @Inject constructor(
         const val PREF_LOCATION_OPT_IN = "location_opt_in"
         const val PREF_REMINDER_INTERVAL = "reminder_interval_hours"
         const val PREF_IS_PAIRED = "is_paired"
+        const val PREF_NICKNAME = "nickname"
+        const val PREF_PARTNER_LAST_SEEN = "partner_last_seen_ts"
         const val DEFAULT_REMINDER_INTERVAL = 3
     }
 
@@ -50,6 +52,15 @@ class StatusRepository @Inject constructor(
 
     val reminderIntervalHours: Int
         get() = sharedPreferences.getInt(PREF_REMINDER_INTERVAL, DEFAULT_REMINDER_INTERVAL)
+
+    val nickname: String
+        get() = sharedPreferences.getString(PREF_NICKNAME, "") ?: ""
+
+    val partnerLastSeenTimestamp: Long
+        get() = sharedPreferences.getLong(PREF_PARTNER_LAST_SEEN, 0L)
+
+    fun setNickname(name: String) = sharedPreferences.edit().putString(PREF_NICKNAME, name).apply()
+    fun setPartnerLastSeenTimestamp(ts: Long) = sharedPreferences.edit().putLong(PREF_PARTNER_LAST_SEEN, ts).apply()
 
     fun setUserId(id: String) = sharedPreferences.edit().putString(PREF_USER_ID, id).apply()
     fun setPairId(id: String) = sharedPreferences.edit().putString(PREF_PAIR_ID, id).apply()
@@ -94,7 +105,8 @@ class StatusRepository @Inject constructor(
             "note" to status.note,
             "locationName" to status.locationName,
             "timestamp" to status.timestamp,
-            "userId" to status.userId
+            "userId" to status.userId,
+            "nickname" to nickname
         )
         firestore.collection("pairs")
             .document(pairId)
@@ -123,11 +135,34 @@ class StatusRepository @Inject constructor(
                     activity = snapshot.getString("activity") ?: "",
                     note = snapshot.getString("note") ?: "",
                     locationName = snapshot.getString("locationName") ?: "",
-                    timestamp = snapshot.getLong("timestamp") ?: 0L
+                    timestamp = snapshot.getLong("timestamp") ?: 0L,
+                    nickname = snapshot.getString("nickname") ?: ""
                 )
                 trySend(partnerStatus)
             }
         awaitClose { listener.remove() }
+    }
+
+    suspend fun fetchPartnerStatusOnce(): PartnerStatus? {
+        if (pairId.isEmpty() || partnerId.isEmpty()) return null
+        return try {
+            val snapshot = firestore.collection("pairs")
+                .document(pairId)
+                .collection("status")
+                .document(partnerId)
+                .get()
+                .await()
+            if (!snapshot.exists()) return null
+            PartnerStatus(
+                activity = snapshot.getString("activity") ?: "",
+                note = snapshot.getString("note") ?: "",
+                locationName = snapshot.getString("locationName") ?: "",
+                timestamp = snapshot.getLong("timestamp") ?: 0L,
+                nickname = snapshot.getString("nickname") ?: ""
+            )
+        } catch (e: Exception) {
+            null
+        }
     }
 
     suspend fun generatePairingCode(): String {

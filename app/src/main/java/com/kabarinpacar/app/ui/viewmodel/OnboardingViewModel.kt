@@ -16,7 +16,8 @@ data class OnboardingUiState(
     val errorMessage: String = "",
     val isPaired: Boolean = false,
     val pairId: String = "",
-    val isWaitingForPartner: Boolean = false
+    val isWaitingForPartner: Boolean = false,
+    val nickname: String = ""
 )
 
 @HiltViewModel
@@ -24,8 +25,13 @@ class OnboardingViewModel @Inject constructor(
     private val statusRepository: StatusRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(OnboardingUiState())
+    private val _uiState = MutableStateFlow(OnboardingUiState(nickname = statusRepository.nickname))
     val uiState: StateFlow<OnboardingUiState> = _uiState
+
+    fun updateNickname(name: String) {
+        statusRepository.setNickname(name)
+        _uiState.value = _uiState.value.copy(nickname = name)
+    }
 
     fun generateCode() {
         viewModelScope.launch {

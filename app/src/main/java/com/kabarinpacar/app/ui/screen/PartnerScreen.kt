@@ -104,7 +104,7 @@ fun PartnerScreen(
                 }
 
                 Text(
-                    text = "Pasanganmu sedang...",
+                    text = "${status.nickname.ifEmpty { "Pasanganmu" }} sedang...",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )

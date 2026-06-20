@@ -6,6 +6,8 @@ import androidx.work.Configuration
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.PeriodicWorkRequest
+import com.kabarinpacar.app.worker.PartnerCheckWorker
 import com.kabarinpacar.app.worker.ReminderWorker
 import dagger.hilt.android.HiltAndroidApp
 import java.util.concurrent.TimeUnit
@@ -25,6 +27,7 @@ class KabarinApplication : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         scheduleReminderWorker()
+        schedulePartnerCheckWorker()
     }
 
     private fun scheduleReminderWorker() {
@@ -34,6 +37,19 @@ class KabarinApplication : Application(), Configuration.Provider {
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             ReminderWorker.WORK_NAME,
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
+    }
+
+    private fun schedulePartnerCheckWorker() {
+        // Interval minimum WorkManager adalah 15 menit — hemat baterai, cek status pasangan berkala.
+        val workRequest = PeriodicWorkRequestBuilder<PartnerCheckWorker>(
+            PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS
+        ).build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            PartnerCheckWorker.WORK_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
             workRequest
         )
