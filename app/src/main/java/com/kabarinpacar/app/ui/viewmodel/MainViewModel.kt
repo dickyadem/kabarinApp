@@ -17,6 +17,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -57,6 +58,13 @@ class MainViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
     val partnerStatus: StateFlow<PartnerStatus?> = statusRepository.listenToPartnerStatus()
+        .onEach { status ->
+            // User sudah melihat status pasangan secara live di app → majukan penanda
+            // agar PartnerCheckWorker tidak mengirim notifikasi duplikat untuk status yang sama.
+            if (status != null && status.timestamp > statusRepository.partnerLastSeenTimestamp) {
+                statusRepository.setPartnerLastSeenTimestamp(status.timestamp)
+            }
+        }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
     val isPaired: Boolean get() = statusRepository.isPaired
