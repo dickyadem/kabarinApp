@@ -5,9 +5,9 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Hati utama (putih) -->
+    <!-- Hati utama -->
     <path
-        android:fillColor="#FFFFFF"
+        android:fillColor="#000000"
         android:pathData="
             M54,76
             C54,76 24,58 24,38
@@ -17,10 +17,9 @@
             C76,20 84,28 84,38
             C84,58 54,76 54,76Z" />
 
-    <!-- Chat bubble kecil di kanan bawah hati (putih, sedikit transparan) -->
+    <!-- Chat bubble -->
     <path
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.9"
+        android:fillColor="#000000"
         android:pathData="
             M62,60
             L86,60
@@ -34,22 +33,5 @@
             C59.8,84 58,82.2 58,80
             L58,64
             C58,61.8 59.8,60 62,60Z" />
-
-    <!-- Titik-titik di dalam chat bubble (warna pink/merah muda) -->
-    <circle
-        android:fillColor="#F43F5E"
-        android:cx="68"
-        android:cy="72"
-        android:r="2.5" />
-    <circle
-        android:fillColor="#F43F5E"
-        android:cx="74"
-        android:cy="72"
-        android:r="2.5" />
-    <circle
-        android:fillColor="#F43F5E"
-        android:cx="80"
-        android:cy="72"
-        android:r="2.5" />
 
 </vector>
