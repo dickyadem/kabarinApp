@@ -224,7 +224,7 @@ class StatusRepository @Inject constructor(
         }
     }
 
-    suspend fun listenForPairingConfirmation(code: String, onPaired: (String, String) -> Unit) {
+    fun listenForPairingConfirmation(code: String, onPaired: (String, String) -> Unit) {
         firestore.collection("pairs")
             .addSnapshotListener { snapshots, error ->
                 if (error != null || snapshots == null) return@addSnapshotListener
