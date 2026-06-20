@@ -1,0 +1,31 @@
+# Built outputs
+/build/
+app/build/
+
+# Gradle
+.gradle/
+local.properties
+gradle.properties.local
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+
+# Keystore / signing (NEVER commit these)
+*.jks
+*.keystore
+*.p12
+key.properties
+
+# Google Services (contains API keys — commit only if intentional)
+# google-services.json
+
+# Logs & reports
+*.log
+lint/
+
+# OS
+Thumbs.db
