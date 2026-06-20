@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kabarinpacar.app.data.model.ActivityType
 import com.kabarinpacar.app.data.model.PartnerStatus
+import com.kabarinpacar.app.ui.util.visual
 import com.kabarinpacar.app.ui.viewmodel.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -169,7 +170,12 @@ fun HomeScreen(
                         } catch (e: Exception) {
                             ActivityType.LAINNYA
                         }
-                        Text(text = activityType.emoji, fontSize = 32.sp)
+                        Icon(
+                            imageVector = activityType.visual().icon,
+                            contentDescription = activityType.label,
+                            modifier = Modifier.size(32.dp),
+                            tint = activityType.visual().tint
+                        )
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
                             Text(
@@ -334,7 +340,12 @@ fun PartnerStatusCard(
                         .background(MaterialTheme.colorScheme.primaryContainer),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = activityType.emoji, fontSize = 26.sp)
+                    Icon(
+                        imageVector = activityType.visual().icon,
+                        contentDescription = activityType.label,
+                        modifier = Modifier.size(26.dp),
+                        tint = activityType.visual().tint
+                    )
                 }
                 Spacer(modifier = Modifier.width(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
@@ -418,15 +429,12 @@ fun ActivityChip(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val bgColor = if (isSelected)
-        MaterialTheme.colorScheme.primary
-    else
-        MaterialTheme.colorScheme.surfaceVariant
-
-    val textColor = if (isSelected)
-        MaterialTheme.colorScheme.onPrimary
-    else
-        MaterialTheme.colorScheme.onSurfaceVariant
+    val visual = activity.visual()
+    val bgColor = if (isSelected) MaterialTheme.colorScheme.primary
+    else MaterialTheme.colorScheme.surfaceVariant
+    val iconTint = if (isSelected) MaterialTheme.colorScheme.onPrimary else visual.tint
+    val textColor = if (isSelected) MaterialTheme.colorScheme.onPrimary
+    else MaterialTheme.colorScheme.onSurfaceVariant
 
     Box(
         modifier = Modifier
@@ -439,7 +447,12 @@ fun ActivityChip(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Text(text = activity.emoji, fontSize = 18.sp)
+            Icon(
+                imageVector = visual.icon,
+                contentDescription = activity.label,
+                modifier = Modifier.size(18.dp),
+                tint = iconTint
+            )
             Text(
                 text = activity.label,
                 style = MaterialTheme.typography.bodyMedium,

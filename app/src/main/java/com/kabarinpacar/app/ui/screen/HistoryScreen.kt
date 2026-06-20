@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kabarinpacar.app.data.model.ActivityType
 import com.kabarinpacar.app.data.model.StatusUpdate
+import com.kabarinpacar.app.ui.util.visual
 import com.kabarinpacar.app.ui.viewmodel.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -145,9 +146,11 @@ fun StatusHistoryItem(status: StatusUpdate) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(
-                text = activityType.emoji,
-                fontSize = 32.sp
+            Icon(
+                imageVector = activityType.visual().icon,
+                contentDescription = activityType.label,
+                modifier = Modifier.size(32.dp),
+                tint = activityType.visual().tint
             )
             Column(modifier = Modifier.weight(1f)) {
                 Text(

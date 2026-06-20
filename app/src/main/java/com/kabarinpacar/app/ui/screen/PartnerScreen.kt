@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kabarinpacar.app.data.model.ActivityType
+import com.kabarinpacar.app.ui.util.visual
 import com.kabarinpacar.app.ui.viewmodel.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -97,9 +98,11 @@ fun PartnerScreen(
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = activityType.emoji,
-                        fontSize = 48.sp
+                    Icon(
+                        imageVector = activityType.visual().icon,
+                        contentDescription = activityType.label,
+                        modifier = Modifier.size(56.dp),
+                        tint = activityType.visual().tint
                     )
                 }
 
